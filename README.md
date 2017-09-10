@@ -28,24 +28,25 @@ Software Project Team 2
 #### 리뷰 1  :  factorial [2017.09.07.목]
 
 * 고지원 
-	* 아직 없음
+> 아직 없음
 * 길병찬
-	* 구조 개선
-		* try except 범위 좁힘
+>*구조 개선
+>	* try except 범위 좁힘
 * 김규리
-	* 의미 부여
-		* 함수명 수정 : fun ==> factorial
-		* 변수명 수정 : x ==> result
-	* 역할 분리
-		* factorial 함수는 계산을 전담하고 더 이상 print 하지 않는다
-	* 중복 제거, 구조 개선
-		* input과 factorial 함수를 2번씩 호출  ==>  각각 1번씩만 호출 
+>* 의미 부여
+>	함수명 수정 : fun ==> factorial
+>	변수명 수정 : x ==> result
+>* 역할 분리
+>	factorial 함수는 계산을 전담하고 더 이상 print 하지 않는다
+>* 중복 제거, 구조 개선
+>	input과 factorial 함수를 2번씩 호출  ==>  각각 1번씩만 호출 
 * 김수진
-	* 불필요한 코드 조정
-		* 불필요한 continue문 삭제 
-			* [참고 : try except 범위 조정시 continue문이 다시 필요 ]
-		* 중복되는 if문 필터링 조정 [MINOR] 
-			* if n <= 1 : return 0  ==>  if n == 0 : return 0
+>* 불필요한 코드 조정
+>	불필요한 continue문 삭제 
+>		[참고 : try except 범위 조정시 continue문이 다시 필요 ]
+>	
+>	중복되는 if문 필터링 조정 [MINOR] 
+>		if n <= 1 : return 0  ==>  if n == 0 : return 0
 
 
 
