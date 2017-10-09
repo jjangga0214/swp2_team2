@@ -1,0 +1,10 @@
+*.odp
+.~lock.*
+.temp_*
+.idea
+*.class.pdf
+.Rhistory
+*.mkv
+*.xges
+*.dat
+*.pyc
