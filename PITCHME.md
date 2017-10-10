@@ -28,16 +28,42 @@ def fibo_iter(n: int) -> int:
     return rseq.get(n)
 ```
 ---
+```python
+class RecurrenceSeq:
+    @tc.typecheck
+    def __init__(self, *init_terms, calc: callable, init_idx: int):
+        '''
+        주석 생략
+        '''
+        self._init_idx = init_idx
+        self._idx = init_idx
+        self._part_terms = dllist(init_terms)
+        self._calc = calc
+
+    @property
+    def idx(self) -> int:
+        return self._idx
+
+    @property
+    def part_terms(self) -> dllist:
+        return self._part_terms
+
+    @part_terms.setter
+    @tc.typecheck
+    def part_terms(self, part_terms: collections.Iterable):
+        self._part_terms = dllist(part_terms)
+```
+---
 ## Facade Pattern
 ---
 ## Linked List
 ---
 ```python
-
+a
 ```
 ---
 ```python
-
+a
 ```
 ---
 ## Meta 정보 추출
