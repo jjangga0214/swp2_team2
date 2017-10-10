@@ -1,4 +1,4 @@
-## Hello !
+## Hello Review!
 ---
 ## 타입 체크
 ---
@@ -12,29 +12,29 @@ def fibo_recur(n: int) -> int:
 ---
 ## @decorator
 ---
-```python
-
-```
+## 횡단 관심사
+* #### 시간 체크
+* #### 로깅
+* #### 보안, 트랜잭션 등등..
 ---
 ## AOP
----
-```python
-
-```
 ---
 ## 인접 n 항간 점화식
 ---
 ```python
-
+@tc.typecheck
+def fibo_iter(n: int) -> int:
+    rseq = RecurrenceSeq(0, 1, calc=lambda nextidx, parts: parts[0] + parts[1], init_idx=0)
+    return rseq.get(n)
 ```
+---
+## Facade Pattern
 ---
 ## Linked List
 ---
 ```python
 
 ```
----
-## Facade Pattern
 ---
 ```python
 
