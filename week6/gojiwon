@@ -1,13 +1,12 @@
 import pickle
 import sys
-from PyQt5.QtWidgets import (QWidget, QPushButton, 
-    QHBoxLayout, QVBoxLayout, QApplication, QLabel, 
-    QComboBox, QTextEdit, QLineEdit,QGridLayout)
+from PyQt5.QtWidgets import (QWidget, QPushButton, QApplication, QLabel,
+                             QComboBox, QTextEdit, QLineEdit, QGridLayout)
+import functools
 from PyQt5.QtCore import Qt
 
 
 class ScoreDB(QWidget):
-
     def __init__(self):
         super().__init__()
 
@@ -18,13 +17,11 @@ class ScoreDB(QWidget):
         self.readScoreDB()
         self.showScoreDB()
 
-
     def initUI(self):
 
         grid = QGridLayout()
         grid.setSpacing(10)
 
-        
         name = QLabel("Name:", self)
         age = QLabel("Age:", self)
         score = QLabel("Score:", self)
@@ -63,30 +60,29 @@ class ScoreDB(QWidget):
         grid.addWidget(showbutton, 3, 5)
         showbutton.clicked.connect(self.showbuttonClicked)
 
-        grid.addWidget(name,1,0)
-        grid.addWidget(self.nameEdit,1,1)
-        grid.addWidget(age,1,2)
-        grid.addWidget(self.ageEdit,1,3)
-        grid.addWidget(score,1,4)
-        grid.addWidget(self.scoreEdit,1,5)
-        grid.addWidget(amount,2,2)
-        grid.addWidget(self.amountEdit,2,3)
-        grid.addWidget(key,2,4)
-        grid.addWidget(self.keybox,2,5)
-        grid.addWidget(result,4,0)
-        grid.addWidget(self.resultEdit,5,0,5,6)
+        grid.addWidget(name, 1, 0)
+        grid.addWidget(self.nameEdit, 1, 1)
+        grid.addWidget(age, 1, 2)
+        grid.addWidget(self.ageEdit, 1, 3)
+        grid.addWidget(score, 1, 4)
+        grid.addWidget(self.scoreEdit, 1, 5)
+        grid.addWidget(amount, 2, 2)
+        grid.addWidget(self.amountEdit, 2, 3)
+        grid.addWidget(key, 2, 4)
+        grid.addWidget(self.keybox, 2, 5)
+        grid.addWidget(result, 4, 0)
+        grid.addWidget(self.resultEdit, 5, 0, 5, 6)
 
         self.setLayout(grid)
 
         self.setGeometry(300, 300, 500, 250)
-        self.setWindowTitle('Assignment6')    
+        self.setWindowTitle('Assignment6')
         self.show()
 
     def addbuttonClicked(self):
-        record = {'Name': self.nameEdit.text(), 'Age': self.ageEdit.text(), 'Score': self.scoreEdit.text()}
+        record = {'Name': self.nameEdit.text(), 'Age': int(self.ageEdit.text()), 'Score': int(self.scoreEdit.text())}
         self.scoredb += [record]
         self.showScoreDB()
-
 
     def delbuttonClicked(self):
         new_scdb = sorted(self.scoredb, key=lambda x: x["Name"], reverse=True)
@@ -96,12 +92,25 @@ class ScoreDB(QWidget):
         self.showScoreDB()
 
     def findbuttonClicked(self):
+
+        # 1)
         result = ""
-        for p in sorted(self.scoredb, key=lambda person: person["Name"]):
+        ls = sorted(self.scoredb, key=lambda person: person["Name"])
+        for p in filter(lambda p: p["Name"] == self.nameEdit.text(), ls):
             for attr in sorted(p):
-                if p['Name'] == self.nameEdit.text():
-                    result += attr + "=" + str(p[attr]) + " "
+                result += attr + "=" + str(p[attr]) + " "
             result += "\n"
+
+        # 2)
+        # for p in sorted(self.scoredb, key=lambda person: person["Name"]):
+        #     is_pass = True
+        #     for attr in sorted(p):
+        #         if p['Name'] == self.nameEdit.text():
+        #             result += attr + "=" + str(p[attr]) + " "
+        #             is_pass = False
+        #     if not is_pass:
+        #         result += "\n"
+
         self.resultEdit.setText(result)
 
     def incbuttonClicked(self):
@@ -111,8 +120,6 @@ class ScoreDB(QWidget):
                     p["Score"] += int(self.amountEdit.text())
                     break
         self.showScoreDB()
-
-
 
     def showbuttonClicked(self):
         self.showScoreDB(self.keybox.currentText())
@@ -135,7 +142,6 @@ class ScoreDB(QWidget):
             pass
         fH.close()
 
-
     # write the data into person db
     def writeScoreDB(self):
         fH = open(self.dbfilename, 'wb')
@@ -143,7 +149,7 @@ class ScoreDB(QWidget):
 
         fH.close()
 
-    def showScoreDB(self,keyname="Name"):
+    def showScoreDB(self, keyname="Name"):
         result = ""
         for p in sorted(self.scoredb, key=lambda person: person[keyname]):
             for attr in sorted(p):
@@ -151,14 +157,9 @@ class ScoreDB(QWidget):
             result += "\n"
         self.resultEdit.setText(result)
 
-        
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = ScoreDB()
     ex.show()
     sys.exit(app.exec_())
-
-
-
-
