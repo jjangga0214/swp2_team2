@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import QLayout, QGridLayout
 
 
 class Button(QToolButton):
-
     def __init__(self, text, callback):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -21,7 +20,6 @@ class Button(QToolButton):
 
 
 class Calculator(QWidget):
-
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -34,7 +32,7 @@ class Calculator(QWidget):
         # Digit Buttons
         self.digitButton = [x for x in range(0, 10)]
 
-        for i in range (10):
+        for i in range(10):
             self.digitButton[i] = Button(str(i), self.buttonClicked)
 
         # . and = Buttons
@@ -65,14 +63,14 @@ class Calculator(QWidget):
         numLayout.addWidget(self.digitButton[0], 3, 0)
 
         list = [0]
-        for i in range (1, 10):
-            list.append(i/3)
+        for i in range(1, 10):
+            list.append(i / 3)
 
         list.remove(3)
         list.reverse()
 
-        for j in range (1, 10):
-            numLayout.addWidget(self.digitButton[j], list[j-1], (j-1)%3)
+        for j in range(1, 10):
+            numLayout.addWidget(self.digitButton[j], list[j - 1], (j - 1) % 3)
 
         numLayout.addWidget(self.decButton, 3, 1)
         numLayout.addWidget(self.eqButton, 3, 2)
@@ -109,9 +107,7 @@ class Calculator(QWidget):
             self.display.setText(self.display.text() + key)
 
 
-
 if __name__ == '__main__':
-
     import sys
 
     app = QApplication(sys.argv)
