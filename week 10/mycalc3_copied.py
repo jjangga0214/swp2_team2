@@ -3,14 +3,15 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLineEdit, QToolButton
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QLayout, QGridLayout
+import itertools
 
 
 class Button(QToolButton):
-    def __init__(self, text, callback):
+    def __init__(self, text: str, onClicked: callable):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.setText(text)
-        self.clicked.connect(callback)
+        self.clicked.connect(onClicked)
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()
@@ -22,78 +23,39 @@ class Button(QToolButton):
 class Calculator(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setWindowTitle("My Calculator")
+
+        # Layout
+        mainLayout = QGridLayout()
+        mainLayout.setSizeConstraint(QLayout.SetFixedSize)
+        self.setLayout(mainLayout)
 
         # Display Window
         self.display = QLineEdit()
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
         self.display.setMaxLength(15)
-
-        # Digit Buttons
-        self.digitButtons = []
-
-        for i in range(10):
-            self.digitButtons.append(Button(str(i), self.buttonClicked))
-
-        # . and = Buttons
-        self.decButton = Button('.', self.buttonClicked)
-        self.eqButton = Button('=', self.buttonClicked)
-
-        # Operator Buttons
-        self.mulButton = Button('*', self.buttonClicked)
-        self.divButton = Button('/', self.buttonClicked)
-        self.addButton = Button('+', self.buttonClicked)
-        self.subButton = Button('-', self.buttonClicked)
-
-        # Parentheses Buttons
-        self.lparButton = Button('(', self.buttonClicked)
-        self.rparButton = Button(')', self.buttonClicked)
-
-        # Clear Button
-        self.clearButton = Button('C', self.buttonClicked)
-
-        # Layout
-        mainLayout = QGridLayout()
-        mainLayout.setSizeConstraint(QLayout.SetFixedSize)
-
+        # Display 를 mainLayout의 0행 0열에 세로로 한칸, 가로로 2칸의 크기로 배치한다.
         mainLayout.addWidget(self.display, 0, 0, 1, 2)
 
+        # Number Layout
         numLayout = QGridLayout()
-
-        numLayout.addWidget(self.digitButtons[0], 3, 0)
-
-        list = [0]
-        for i in range(1, 10):
-            list.append(i / 3)
-
-        list.remove(3)
-        list.reverse()
-
-        for j in range(1, 10):
-            numLayout.addWidget(self.digitButtons[j], list[j - 1], (j - 1) % 3)
-
-        numLayout.addWidget(self.decButton, 3, 1)
-        numLayout.addWidget(self.eqButton, 3, 2)
-
+        # 버튼들에 들어갈 텍스트를 만든다. [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, '.', '=']
+        # 참고 : itertools.chain 함수는 여러 iterable(반복 가능한 것들)들을 순서대로 연결해준다.
+        buttonTexts = itertools.chain(range(7, 10), range(4, 7), range(1, 4), (0, '.', '='))
+        # 레이아웃에 버튼들을 한줄에 2개씩 배치한다.
+        alignButtonsOnGrid(numLayout, buttonTexts, unit=3, onClicked=self.buttonClicked)
+        # Number Layout을 mainLayout의 1행 0열에 배치한다.
         mainLayout.addLayout(numLayout, 1, 0)
 
+        # Operator Layout
         opLayout = QGridLayout()
-
-        opLayout.addWidget(self.mulButton, 0, 0)
-        opLayout.addWidget(self.divButton, 0, 1)
-        opLayout.addWidget(self.addButton, 1, 0)
-        opLayout.addWidget(self.subButton, 1, 1)
-
-        opLayout.addWidget(self.lparButton, 2, 0)
-        opLayout.addWidget(self.rparButton, 2, 1)
-
-        opLayout.addWidget(self.clearButton, 3, 0)
-
+        # 버튼들에 들어갈 텍스트를 만든다
+        buttonTexts = ('*', '/', '+', '-', '(', ')', 'C')
+        # 레이아웃에 버튼들을 한줄에 2개씩 배치한다.
+        alignButtonsOnGrid(opLayout, buttonTexts, unit=2, onClicked=self.buttonClicked)
+        # Operator Layout을 mainLayout의 1행 1열에 배치한다.
         mainLayout.addLayout(opLayout, 1, 1)
-
-        self.setLayout(mainLayout)
-
-        self.setWindowTitle("My Calculator")
 
     def buttonClicked(self):
         button = self.sender()
@@ -102,9 +64,23 @@ class Calculator(QWidget):
             result = str(eval(self.display.text()))
             self.display.setText(result)
         elif key == 'C':
-            self.display.setText('')
+            self.display.clear()
         else:
             self.display.setText(self.display.text() + key)
+
+
+# 버튼 GridLayout 에
+def alignButtonsOnGrid(layout: QGridLayout, texts, unit: int, onClicked: callable):
+    '''
+    layout 위에 버튼들을 올려놓는 메서드이다.
+    :param layout: 버튼들을 올려놓을 QGridLayout 객체
+    :param texts: 버튼들을 생성하는 데 필요한 텍스트
+    :param unit: 한 줄에 가능한 버튼의 수. 즉, layout의 열(column) 수
+    :param onClicked: Button 생성자에 인자로 주어질 callback
+    '''
+    for i, text in enumerate(texts):
+        button = Button(str(text), onClicked)
+        layout.addWidget(button, i // unit, i % unit)
 
 
 if __name__ == '__main__':
