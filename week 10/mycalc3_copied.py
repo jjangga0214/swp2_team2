@@ -30,7 +30,7 @@ class Calculator(QWidget):
         self.display.setMaxLength(15)
 
         # Digit Buttons
-        self.digitButtons = [x for x in range(0, 10)]
+        self.digitButtons = []
 
         for i in range(10):
             self.digitButtons[i] = Button(str(i), self.buttonClicked)
