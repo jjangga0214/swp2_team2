@@ -30,10 +30,10 @@ class Calculator(QWidget):
         self.display.setMaxLength(15)
 
         # Digit Buttons
-        self.digitButton = [x for x in range(0, 10)]
+        self.digitButtons = [x for x in range(0, 10)]
 
         for i in range(10):
-            self.digitButton[i] = Button(str(i), self.buttonClicked)
+            self.digitButtons[i] = Button(str(i), self.buttonClicked)
 
         # . and = Buttons
         self.decButton = Button('.', self.buttonClicked)
@@ -60,7 +60,7 @@ class Calculator(QWidget):
 
         numLayout = QGridLayout()
 
-        numLayout.addWidget(self.digitButton[0], 3, 0)
+        numLayout.addWidget(self.digitButtons[0], 3, 0)
 
         list = [0]
         for i in range(1, 10):
@@ -70,7 +70,7 @@ class Calculator(QWidget):
         list.reverse()
 
         for j in range(1, 10):
-            numLayout.addWidget(self.digitButton[j], list[j - 1], (j - 1) % 3)
+            numLayout.addWidget(self.digitButtons[j], list[j - 1], (j - 1) % 3)
 
         numLayout.addWidget(self.decButton, 3, 1)
         numLayout.addWidget(self.eqButton, 3, 2)
