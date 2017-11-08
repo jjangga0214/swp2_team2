@@ -72,7 +72,7 @@ class Calculator(QWidget):
         list.reverse()
 
         for j in range (1, 10):
-            numLayout.addWidget(self.digitButton[j], list[j-1], (i-1)%3)
+            numLayout.addWidget(self.digitButton[j], list[j-1], (j-1)%3)
 
         numLayout.addWidget(self.decButton, 3, 1)
         numLayout.addWidget(self.eqButton, 3, 2)
