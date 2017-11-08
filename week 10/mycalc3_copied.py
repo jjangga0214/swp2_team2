@@ -33,7 +33,7 @@ class Calculator(QWidget):
         self.digitButtons = []
 
         for i in range(10):
-            self.digitButtons[i] = Button(str(i), self.buttonClicked)
+            self.digitButtons.append(Button(str(i), self.buttonClicked))
 
         # . and = Buttons
         self.decButton = Button('.', self.buttonClicked)
