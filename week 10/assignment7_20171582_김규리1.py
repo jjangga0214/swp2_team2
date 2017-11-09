@@ -78,7 +78,7 @@ class Calculator(QWidget):
         """
 
         for j in range(1, 10) :
-            button = Button(str(i), self.buttonClicked)
+            button = Button(str(j), self.buttonClicked)
             numLayout.addWidget(self.digitButton[j], (9-j)//3, (j-1)%3)
 
         numLayout.addWidget(self.decButton, 3, 1)
