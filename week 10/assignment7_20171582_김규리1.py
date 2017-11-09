@@ -36,7 +36,7 @@ class Calculator(QWidget):
         for i in range(10):
             self.digitButton[i] = Button(str(i), self.buttonClicked)
         """
-        self.digitButton = [Button(str(i), self.buttonClicked) for i in range(0, 10)]
+        # self.digitButton = [Button(str(i), self.buttonClicked) for i in range(0, 10)]
 
         # . and = Buttons
         self.decButton = Button('.', self.buttonClicked)
@@ -78,6 +78,7 @@ class Calculator(QWidget):
         """
 
         for j in range(1, 10) :
+            button = Button(str(i), self.buttonClicked)
             numLayout.addWidget(self.digitButton[j], (9-j)//3, (j-1)%3)
 
         numLayout.addWidget(self.decButton, 3, 1)
