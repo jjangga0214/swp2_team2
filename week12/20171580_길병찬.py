@@ -1,5 +1,5 @@
 import re
-from enum import Enum
+from enum import Enum, auto
 import random
 
 
@@ -35,9 +35,10 @@ class HangMan:
         current = HangMan.picture
         for i in range(HangMan.max_life):
             if i < HangMan.max_life - self._life:
-                current = current.replace(str(i), HangMan.replacements[i])
+                replacement = HangMan.replacements[i]
             else:
-                current = current.replace(str(i), ' ')
+                replacement = ' '
+            current = current.replace(str(i), replacement)
 
         return current
 
@@ -55,11 +56,15 @@ class HangManService:
         self._word = self._rand_words.pop()
 
     class Result(Enum):
-        ALREADY = 'ALREADY'
-        SUCCESS = 'SUCCESS'
-        CLEAR = 'CLEAR'
-        FAILURE = 'FAILURE'
-        DEATH = 'DEATH'
+
+        def _generate_next_value_(name, start, count, last_values):
+            return name.lower()
+
+        ALREADY = auto()
+        SUCCESS = auto()
+        CLEAR = auto()
+        FAILURE = auto()
+        DEATH = auto()
 
     def reset(self):
         self.hangman = HangMan()
@@ -84,7 +89,7 @@ class HangManService:
                 return HangManService.Result.DEATH
             return HangManService.Result.FAILURE
 
-    def load_random_word(self, n=2):
+    def load_random_word(self, n=10):
         with open(self._filepath) as f:
             flen = sum(1 for line in list(f))
         with open(self._filepath) as f:
@@ -133,24 +138,21 @@ class HangmanCliViewer:
             print('Hangman 이 단두대에 매달려 게임이 종료됩니다.')
         return result
 
-    def play(self):
+    def playing(self):
+
         while True:
-            result = None
-            while result not in (HangManService.Result.CLEAR, HangManService.Result.DEATH):
-                result = self._display()
-            while True:
+            while self._display() not in (HangManService.Result.CLEAR, HangManService.Result.DEATH):
+                pass
+            decision = None
+            while decision not in ('y', 'n'):
                 decision = input('다음 게임을 이어서 진행하시겠습니까? (y/n)')
-                if decision not in ('y', 'n'):
-                    continue
-                else:
-                    break
-            if decision is 'y':
-                continue
-            elif decision is 'n':
+
+            if decision is 'n':
                 print("게임을 플레이해주셔서 감사합니다.")
                 break
 
 
 if __name__ == '__main__':
     cli_viewer = HangmanCliViewer()
-    cli_viewer.play()
+    cli_viewer.playing()
+
