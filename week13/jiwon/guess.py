@@ -8,7 +8,7 @@ class Guess:
     def display(self):
         print("Current: ", self.currentStatus)
         print("Tries:", self.numTries)
-        print("GuessedChars:"self.guessedChars)
+        print("GuessedChars:", self.guessedChars)
 
 
     def guess(self, character):
