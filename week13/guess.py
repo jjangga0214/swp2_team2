@@ -1,31 +1,28 @@
 class Guess:
 
     def __init__(self, word):
-        self.secretWord = word
-        self.numTries = 0
+        self.Wordlist = list(self.word)
         self.guessedChars = []
-        self.currentStatus = ['_' for i in range(len(word))]
+        self.numTries = 0
+        self.nowlist = []
+        for i in range(len(self.word)):
+            self.nowlist.append("_")
+
 
     def display(self):
-        current = ''
-        for i in self.currentStatus:
-            current += i
-        print('Current: %s' % current)
-        print('Tries: %d' % self.numTries)
+        print("Current: " + self.Wordlist)
+        print("Tries: " + self.numTries)
 
     def guess(self, character):
-        self.guessedChars.append(character)
-        if character in self.secretWord:
-            for i in range(len(self.currentStatus)):
-                if self.secretWord[i] == character:
-                    self.currentStatus[i] = character
+        if self.character in self.Wordlist:
+            for i in range(len(self.Wordlist)):
+                if self.character == self.Wordlist[i]:
+                    self.nowlist[i].replace(self.chracter)
+            if self.nowlist == self.Wordlist:
+                for i in range(len(self.nowlist)):
+                    print(self.nowlist[i], end='')
+                return True
+            else:
+                return False
         else:
             self.numTries += 1
-
-        if '_' in self.currentStatus:
-            return False
-        else:
-            return True
-
-
-
